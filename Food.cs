@@ -12,17 +12,25 @@ namespace Snake_Game_Planning
     {
         Graphics g;
         public Point Location;
-        public Food() 
-        {
 
+        public Food(Graphics g) 
+        {
+            this.g = g;
         }
-
-
-        public void DrawFood(Form Main) 
+        /// <summary>
+        /// 绘画食物
+        /// </summary>
+        /// <param name="g"></param>
+        public void DrawFood(Graphics g) 
         {
-            g = Main.CreateGraphics();
-            
-
+            g.FillEllipse(new SolidBrush(Color.Red), Location.X, Location.Y, 15, 15);
+        }
+        /// <summary>
+        /// 清除食物
+        /// </summary>
+        public void DeleteFood()
+        {
+            g.FillEllipse(new SolidBrush(Color.White), Location.X, Location.Y, 15, 15);
         }
     }
 }
