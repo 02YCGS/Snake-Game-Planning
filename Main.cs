@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Snake_Game_Planning
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
