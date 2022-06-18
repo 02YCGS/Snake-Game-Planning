@@ -17,8 +17,14 @@ namespace Snake_Game_Planning
         {
             this.g = g;
         }
+
+        public Point _Location
+        {
+            set { Location = value; }
+            get { return Location; }
+        }
         /// <summary>
-        /// 绘画食物
+        /// 画食物
         /// </summary>
         /// <param name="g"></param>
         public void DrawFood(Graphics g) 
@@ -28,7 +34,7 @@ namespace Snake_Game_Planning
         /// <summary>
         /// 清除食物
         /// </summary>
-        public void DeleteFood()
+        public void DeleteFood(Graphics g)
         {
             g.FillEllipse(new SolidBrush(Color.White), Location.X, Location.Y, 15, 15);
         }
