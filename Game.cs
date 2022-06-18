@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -8,21 +10,11 @@ using System.Windows.Forms;
 
 namespace Snake_Game_Planning
 {
-    internal class Food
+    public partial class Game : Form
     {
-        Graphics g;
-        public Point Location;
-        public Food() 
+        public Game()
         {
-
-        }
-
-
-        public void DrawFood(Form Main) 
-        {
-            g = Main.CreateGraphics();
-            
-
+            InitializeComponent();
         }
     }
 }
