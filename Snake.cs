@@ -9,61 +9,27 @@ namespace Snake_Game_Planning
 {
     internal class Snake
     {
-       
-            //用于存放蛇的集合
-            private List<Block> blocksList;
-            //0-上，1-右，2-下，3-左
-            private int direction = 1;
-            //蛇头的编号，蛇的长度
-            private int headNumber;
-            //蛇头左上角坐标
-            private Point headPoint;
-            private Point mapLeft;
-            //游戏开始时，初始的蛇
-            public Snake(Point map, int count)
-            {
-                mapLeft = map;
-                Block blockSnake;
-                //定义蛇的起始位置（蛇尾）
-                Point p = new Point(map.X + 15, map.Y + 15);
-                blocksList = new List<Block>();
-                //循环画蛇块用于填充蛇集合
-                for (int i = 0; i < count; i++)
-                {
-                    //x坐标加15
-                    p.X += 15;
-                    //实例化蛇块
-                    blockSnake = new Block();
-                    //定义蛇块的左上角位置
-                    blockSnake.Origin = p;
-                    //定义蛇块的编号1，2，3...
-                    blockSnake.BlockNumber = i + 1;
-                    if (i == count - 1)
-                    {
-                        //蛇头
-                        //给蛇头位置赋值
-                        headPoint = blockSnake.Origin;
-                        blockSnake.IsHead = true;
-                    }
-                    blocksList.Add(blockSnake);
+        Graphics g;
+        Map map;
+        //用于存放蛇身体的坐标的集合
+        private List<Point> bodyList;
+        //0-上，1-右，2-下，3-左
+        private int direction = 1;
+        
+        //游戏开始时，初始的蛇
+        public Snake(Map map)            
+        {
+            this.g = map.g;
+            this.map = map;
+            //定义尾部坐标
+            headInsert(new Point(0, 0));
+            //定义头部坐标
+            headInsert(new Point(1,0));
 
-                }
-                //蛇的长度赋值
-                headNumber = count;
-            }
-            //蛇头坐标的只读属性
-            public Point HeadPoint
-            {
-                get { return headPoint; }
-            }
-            //蛇的运动方向的属性
-            public int Direction
-            {
-                get { return direction; }
-                set { direction = value; }
-            }
+        }
             /// <summary>
             /// 蛇的转换方向
+            /// 不能往反方向走
             /// </summary>
             /// <param name="pDirection">想要改变的方向</param>
             public void TurnDirection(int pDirection)
@@ -104,125 +70,101 @@ namespace Snake_Game_Planning
 
                 }
             }
+        /// <summary>
+        /// 在列表头部插入并画出蛇头
+        /// </summary>
+        /// <param name="point">坐标</param>
+        private void headInsert(Point point)
+        {
+            bodyList.Insert(0, point);
+            g.FillRectangle(new SolidBrush(Color.Yellow), point.X * map.unit, point.Y * map.unit, map.unit, map.unit);
+        }
+        //蛇吃到食物后变长，蛇头+1
+        public void SnakeGrowth()
+        {
+            headInsert(map.food.Location);
+        }
 
-            public Point getHeadPoint //只读蛇头位置属性
-            {
-                get { return headPoint; }
-            }
-            //蛇吃到食物后变长，蛇头+1
-            public void SnakeGrowth()
-            {
-                //找到蛇头的坐标
-                Point head = blocksList[blocksList.Count - 1].Origin;
-                int x = head.X;
-                int y = head.Y;
-                //判断蛇的运动方向,改变蛇头的位置
-                switch (direction)
-                {
-                    case 0:
-                        //向上运动
-                        y -= 15;
-                        break;
-                    case 1:
-                        x += 15;
-                        break;
-                    case 2:
-                        y += 15;
-                        break;
-                    case 3:
-                        x -= 15;
-                        break;
-                }
-                //把原先蛇头的块变为普通块
-                blocksList[blocksList.Count - 1].IsHead = false;
-                //实例化新蛇头
-                Block headNew = new Block();
-                headNew.IsHead = true;
-                headNew.BlockNumber = blocksList.Count + 1;
-                headNew.Origin = new Point(x, y);
-                blocksList.Add(headNew);
-                headNumber++;
-                headPoint = headNew.Origin;
-            }
+        //蛇向前运动（没有吃到食物的情况），蛇尾移除，蛇头移位+1
+        public bool Go()
+        {
+            Point next;
 
-            //蛇向前运动（没有吃到食物的情况），蛇尾移除，蛇头移位+1
-            public void Go(Graphics g)
+            Point head = bodyList.First();
+            switch (direction) 
             {
-                Block snakeTail = blocksList[0];
-                //消除蛇尾块
-                snakeTail.UnShowBlock(g);
-                //集合中移除设为块
-                blocksList.RemoveAt(0);
-                foreach (var item in blocksList)
-                {
-                    item.BlockNumber--;
-                }
-                //由于SnakeGrowth中仅仅使蛇头+1，但是headNumber++了。但是此值并没有改变，所以先--
-                headNumber--;
-                SnakeGrowth();
+                case 0:
+                    next = new Point(head.X, head.Y - 1);
+                    break;
+                case 1:
+                    next = new Point(head.X + 1, head.Y);
+                    break;
+                case 2:
+                    next = new Point(head.X, head.Y + 1);
+                    break;
+                case 3:
+                    next = new Point(head.X - 1, head.Y);
+                    break;
+                default:
+                    next = new Point(-1,-1);
+                    break;
             }
 
-            //画出蛇
-            public void ShowSnake(Graphics g)
+            if (CheckSnake(next) || IsTouchMyself(next))
             {
-                foreach (var item in blocksList)
-                {
-                    item.ShowBlock(g);
-                }
+                return false;
             }
-            //隐藏蛇
-            public void UnShowSnake(Graphics g)
+            else
             {
-                foreach (var item in blocksList)
+                if (CheckFood(next))
                 {
-                    item.UnShowBlock(g);
+                    headInsert(map.food.Location);
+                    map.food.DrawNewFood();
                 }
-            }
-            //重置蛇
-            public void Reset(Point map, int count)
-            {
-                Block blockSnake;
-                //定义蛇的起始位置（蛇尾）
-                Point p = new Point(mapLeft.X + 15, mapLeft.Y + 15);
-                blocksList = new List<Block>();
-                //循环画蛇块用于填充蛇集合
-                for (int i = 0; i < count; i++)
+                else
                 {
-                    //x坐标加15
-                    p.X += 15;
-                    //实例化蛇块
-                    blockSnake = new Block();
-                    //定义蛇块的左上角位置
-                    blockSnake.Origin = p;
-                    //定义蛇块的编号1，2，3...
-                    blockSnake.BlockNumber = i + 1;
-                    if (i == count - 1)
-                    {
-                        //蛇头
-                        //给蛇头位置赋值
-                        headPoint = blockSnake.Origin;
-                        blockSnake.IsHead = true;
-                    }
-                    blocksList.Add(blockSnake);
 
+                    Point tail = bodyList.Last();
+                    g.FillRectangle(new SolidBrush(Color.Blue), tail.X * map.unit, tail.Y * map.unit, map.unit, map.unit);
+                    headInsert(next);
+                    bodyList.RemoveAt(bodyList.Count - 1);
                 }
-                //蛇的长度赋值
-                headNumber = count;
-                direction = 1;
-            }
-            //是否碰到自己
-            public bool IsTouchMyself()
-            {
-                bool isTouched = false;
-                for (int i = 0; i < blocksList.Count - 1; i++)
-                {
-                    if (headPoint == blocksList[i].Origin)
-                    {
-                        isTouched = true;
-                        break;
-                    }
-                }
-                return isTouched;
+                return true;
             }
         }
+       /// <summary>
+       /// 判断是否碰到自身
+       /// </summary>
+       /// <param name="p"></param>
+       /// <returns></returns>
+        public bool IsTouchMyself(Point p)
+        {
+            bool isTouched = false;
+            for (int i = 0; i < bodyList.Count - 1; i++)
+            {
+                if (p .Equals(bodyList[i]))
+                {
+                    isTouched = true;
+                    break;
+                }
+            }
+            return isTouched;
+        }
+        /// <summary>
+        /// 判断是否吃到了食物
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckFood(Point point)
+        {
+            return map.food.Location.Equals(point);
+        }
+        /// <summary>
+        /// 判断蛇是否碰到墙壁
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckSnake(Point point)
+        {
+            return (point.X < 0 || point.X > map.column) || (point.Y < 0 || point.Y > map.row);
+        }
+    }
 }

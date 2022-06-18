@@ -12,10 +12,12 @@ namespace Snake_Game_Planning
     {
         Graphics g;
         public Point Location;
+        public Map map;
 
-        public Food(Graphics g) 
+        public Food(Map map) 
         {
-            this.g = g;
+            this.g = map.g;
+            this.map = map;
         }
 
         public Point _Location
@@ -27,16 +29,41 @@ namespace Snake_Game_Planning
         /// 画食物
         /// </summary>
         /// <param name="g"></param>
-        public void DrawFood(Graphics g) 
+        public void DrawFood() 
         {
-            g.FillEllipse(new SolidBrush(Color.Red), Location.X, Location.Y, 15, 15);
+            g.FillEllipse(
+                new SolidBrush(Color.Red),
+                Location.X * map.unit,
+                Location.Y * map.unit,
+                map.unit, map.unit
+                );
         }
         /// <summary>
-        /// 清除食物
+        /// 随机产生食物
         /// </summary>
-        public void DeleteFood(Graphics g)
+        /// <returns></returns>
+        public void FoodRandom()
         {
-            g.FillEllipse(new SolidBrush(Color.White), Location.X, Location.Y, 15, 15);
+            Random random = new Random();
+            int x = random.Next(0, map.column);
+            int y = random.Next(0, map.row);
+            Location = new Point(x, y);
+            if (map.snake.CheckSnake(Location))
+            {
+                FoodRandom();
+            }
         }
+        /// <summary>
+        /// 画食物
+        /// </summary>
+        /// <param name="g"></param>
+        public void DrawNewFood()
+        {
+            //产生随机位置的食物
+            FoodRandom();
+            //显示食物
+            DrawFood();
+        }
+
     }
 }

@@ -12,9 +12,34 @@ namespace Snake_Game_Planning
 {
     public partial class Game : Form
     {
+        Map map;
+        static Bitmap bmp = new Bitmap(400,400);
+        Graphics g = Graphics.FromImage(bmp);
+        //定义分数
+        int score = 0;
         public Game()
         {
             InitializeComponent();
+            map = new Map(g, 15, 30, 25);
+        }
+        //键盘响应事件
+        public void Game_KeyDown(object sender, KeyEventArgs e)
+        {
+            string w = e.KeyValue.ToString();
+            int d;
+            if(w.Equals("w"))
+            {
+                d = 0;
+            }else if(w.Equals("d"))
+            {
+                d = 1;
+            }else if (w.Equals("s"))
+            {
+                d = 2;
+            }else if (w.Equals("a"))
+            {
+                d = 3;
+            }
         }
     }
 }
