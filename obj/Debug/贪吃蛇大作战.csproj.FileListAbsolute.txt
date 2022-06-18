@@ -1,0 +1,10 @@
+D:\VS2022code\贪吃蛇大作战\bin\Debug\贪吃蛇大作战.exe.config
+D:\VS2022code\贪吃蛇大作战\bin\Debug\贪吃蛇大作战.exe
+D:\VS2022code\贪吃蛇大作战\bin\Debug\贪吃蛇大作战.pdb
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.csproj.AssemblyReference.cache
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.csproj.SuggestedBindingRedirects.cache
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.Properties.Resources.resources
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.csproj.GenerateResource.cache
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.csproj.CoreCompileInputs.cache
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.exe
+D:\VS2022code\贪吃蛇大作战\obj\Debug\贪吃蛇大作战.pdb
