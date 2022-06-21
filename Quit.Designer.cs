@@ -1,16 +1,16 @@
 ﻿namespace Snake_Game_Planning
 {
-    partial class Main
+    partial class Quit
     {
         /// <summary>
-        /// 必需的设计器变量。
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// 清理所有正在使用的资源。
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,11 +20,11 @@
             base.Dispose(disposing);
         }
 
-        #region Windows 窗体设计器生成的代码
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// 设计器支持所需的方法 - 不要修改
-        /// 使用代码编辑器修改此方法的内容。
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -34,41 +34,44 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(371, 167);
+            this.button1.Location = new System.Drawing.Point(41, 49);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(145, 55);
+            this.button1.Size = new System.Drawing.Size(93, 50);
             this.button1.TabIndex = 0;
-            this.button1.Text = "开始游戏";
+            this.button1.Text = "退出游戏";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(371, 325);
+            this.button2.Location = new System.Drawing.Point(234, 49);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(145, 55);
+            this.button2.Size = new System.Drawing.Size(93, 50);
             this.button2.TabIndex = 1;
-            this.button2.Text = "退出游戏";
+            this.button2.Text = "重新游戏";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Main
+            // Quit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(882, 553);
+            this.ClientSize = new System.Drawing.Size(369, 149);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Name = "Main";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "Quit";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "开始界面";
+            this.Text = "退出界面";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }
 }
-

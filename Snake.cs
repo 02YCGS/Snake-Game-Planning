@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Snake_Game_Planning
 {
@@ -15,69 +16,75 @@ namespace Snake_Game_Planning
         private List<Point> bodyList;
         //0-上，1-右，2-下，3-左
         private int direction = 1;
+        private int old_direction = 1;
+        public bool status = true;
         
         //游戏开始时，初始的蛇
         public Snake(Map map)            
         {
             this.g = map.g;
             this.map = map;
+            bodyList = new List<Point>();
             //定义尾部坐标
-            headInsert(new Point(0, 0));
+            tailInsert(new Point(0, 0));
             //定义头部坐标
             headInsert(new Point(1,0));
 
         }
-            /// <summary>
-            /// 蛇的转换方向
-            /// 不能往反方向走
-            /// </summary>
-            /// <param name="pDirection">想要改变的方向</param>
-            public void TurnDirection(int pDirection)
+        /// <summary>
+        /// 蛇的转换方向
+        /// 不能往反方向走
+        /// </summary>
+        /// <param name="pDirection">想要改变的方向</param>
+        public void TurnDirection(int pDirection)
+        {
+            //0-上，1-右，2-下，3-左
+            switch (pDirection)
             {
-                switch (direction)
-                {
-                    //原来向上运动
-                    case 0:
-                        //希望向左运动
-                        if (pDirection == 3)
-                            direction = 3;
-                        //希望向右运动
-                        else if (pDirection == 1)
-                            direction = 1;
-                        break;
-                    //原来向右运动
-                    case 1:
-                        //下
-                        if (pDirection == 2)
-                            direction = 2;
-                        //上
-                        else if (pDirection == 0)
-                            direction = 0;
-                        break;
-                    case 2:
-                        if (pDirection == 1)
-                            direction = 1;
-                        else if (pDirection == 3)
-                            direction = 3;
-                        break;
-                    case 3:
-                        if (pDirection == 0)
-                            direction = 0;
-                        else if (pDirection == 2)
-                            direction = 2;
-                        break;
-
-
-                }
+                case 0:
+                    if(old_direction != 2)
+                    {
+                        direction = pDirection;
+                    }
+                    break;
+                case 1:
+                    if(old_direction != 3)
+                    {
+                        direction = pDirection;
+                    }
+                    break;
+                case 2:
+                    if (old_direction != 0)
+                    {
+                        direction = pDirection;
+                    }
+                    break;
+                case 3:
+                    if (old_direction != 1)
+                    {
+                        direction = pDirection;
+                    }
+                    break;
             }
+                
+        }
         /// <summary>
         /// 在列表头部插入并画出蛇头
         /// </summary>
         /// <param name="point">坐标</param>
         private void headInsert(Point point)
         {
+            if (bodyList.First() != null)
+            {
+                g.FillRectangle(new SolidBrush(Color.Blue), bodyList.First().X * map.unit, bodyList.First().Y * map.unit, map.unit, map.unit);
+            }
             bodyList.Insert(0, point);
             g.FillRectangle(new SolidBrush(Color.Yellow), point.X * map.unit, point.Y * map.unit, map.unit, map.unit);
+        }
+        private void tailInsert(Point point)
+        {
+            bodyList.Insert(0, point);
+            g.FillRectangle(new SolidBrush(Color.Blue), point.X * map.unit, point.Y * map.unit, map.unit, map.unit);
         }
         //蛇吃到食物后变长，蛇头+1
         public void SnakeGrowth()
@@ -86,10 +93,14 @@ namespace Snake_Game_Planning
         }
 
         //蛇向前运动（没有吃到食物的情况），蛇尾移除，蛇头移位+1
-        public bool Go()
+        public void Go()
         {
+            if (!status)
+            {
+                return;
+            }
             Point next;
-
+            
             Point head = bodyList.First();
             switch (direction) 
             {
@@ -112,24 +123,29 @@ namespace Snake_Game_Planning
 
             if (CheckSnake(next) || IsTouchMyself(next))
             {
-                return false;
+                status = false;
+                map.gameOver();
             }
             else
             {
+                old_direction = direction;
+                //把原来的头部变成身体的颜色
+                //g.FillRectangle(new SolidBrush(Color.Blue), bodyList.First().X * map.unit, bodyList.First().Y * map.unit, map.unit, map.unit);
                 if (CheckFood(next))
                 {
-                    headInsert(map.food.Location);
+                    map.addScore();
+                    headInsert(map.food.Location);               
                     map.food.DrawNewFood();
                 }
                 else
                 {
 
                     Point tail = bodyList.Last();
-                    g.FillRectangle(new SolidBrush(Color.Blue), tail.X * map.unit, tail.Y * map.unit, map.unit, map.unit);
+                    g.FillRectangle(new SolidBrush(Color.Gray), tail.X * map.unit, tail.Y * map.unit, map.unit, map.unit);        
                     headInsert(next);
                     bodyList.RemoveAt(bodyList.Count - 1);
                 }
-                return true;
+                status = true;
             }
         }
        /// <summary>
@@ -165,6 +181,23 @@ namespace Snake_Game_Planning
         public bool CheckSnake(Point point)
         {
             return (point.X < 0 || point.X > map.column) || (point.Y < 0 || point.Y > map.row);
+        }
+        /// <summary>
+        /// 判断生成的食物是否和蛇重叠
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public bool CheckRandom(Point point)
+        {
+            bool status = false;
+            foreach(Point point1 in bodyList){
+                if (point1.Equals(point))
+                {
+                    status = true;
+                    break;
+                }
+            }
+            return status;
         }
     }
 }

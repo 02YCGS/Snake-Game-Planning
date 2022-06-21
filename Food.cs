@@ -13,7 +13,7 @@ namespace Snake_Game_Planning
         Graphics g;
         public Point Location;
         public Map map;
-
+        public int x,y;
         public Food(Map map) 
         {
             this.g = map.g;
@@ -45,10 +45,10 @@ namespace Snake_Game_Planning
         public void FoodRandom()
         {
             Random random = new Random();
-            int x = random.Next(0, map.column);
-            int y = random.Next(0, map.row);
+            x = random.Next(0, map.column);
+            y = random.Next(0, map.row);
             Location = new Point(x, y);
-            if (map.snake.CheckSnake(Location))
+            if (map.snake.CheckRandom(Location))
             {
                 FoodRandom();
             }

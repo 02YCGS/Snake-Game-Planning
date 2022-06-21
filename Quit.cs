@@ -10,22 +10,25 @@ using System.Windows.Forms;
 
 namespace Snake_Game_Planning
 {
-    public partial class Main : Form { 
-        public Main()
+    public partial class Quit : Form
+    {
+        public Game game;
+        public Quit()
         {
             InitializeComponent();
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            Game game = new Game();
-            game.Show();
-            game.Owner = this;
-            this.Hide();
+            this.Owner.Show();
+            game.Close();
+            this.Close();
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
+            game.Close();
+            this.Owner.Close();
             this.Close();
         }
     }
