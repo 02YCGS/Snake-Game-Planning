@@ -35,7 +35,9 @@ namespace Snake_Game_Planning
             label2.Text = score.ToString();
             label4.Text = level.ToString();
         }
-        //键盘响应事件
+
+
+                 //键盘响应事件
         public void Game_KeyDown(object sender, KeyEventArgs e)
         {
             char w = (char)e.KeyValue;
@@ -72,6 +74,23 @@ namespace Snake_Game_Planning
         private void Game_Load(object sender, EventArgs e)
         {
             map.start();
+        }
+
+
+          public void addScore()
+        {
+            score += 10;
+            level = score / 100 + 1;
+            speed = (int)(500 * (1.0 / level));
+            label2.Text = score.ToString();
+            label4.Text = level.ToString();
+        }
+        public void gameOver()
+        {
+            Quit quit = new Quit();
+            quit.game = this;
+            quit.Show();
+            quit.Owner = this.Owner;
         }
 
     }
