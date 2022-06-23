@@ -14,6 +14,8 @@ namespace Snake_Game_Planning
         public Main()
         {
             InitializeComponent();
+            this.BackgroundImage = Image.FromFile(@"D:\VS2022code\Snake-Game-Planning\Image\img1.png");
+            this.BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
