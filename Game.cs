@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -77,8 +77,35 @@ namespace Snake_Game_Planning
         private void Game_Load(object sender, EventArgs e)
         {
             map.start();
-         
+            Play();
         }
+        public void addScore()
+        {
+            score += 10;
+            level = score / 100 + 1;
+            speed = (int)(500 * (1.0 / level));
+            label2.Text = score.ToString();
+            label4.Text = level.ToString();
+        }
+        public void gameOver()
+        {
+            Quit quit = new Quit();
+            quit.game = this;
+            quit.Show();
+            quit.Owner = this.Owner;
+        }
+
+        public void Play()
+        {
+            mciSendString(@"close temp_alias", null, 0, 0);
+            mciSendString(@"open ""D:\VS2022code\Snake-Game-Planning\music\萌萌哒的徐老师 - Color-X (Remix).mp3"" alias temp_alias", null, 0, 0); //音乐文件
+            mciSendString("play temp_alias repeat", null, 0, 0);
+        }
+
+        public static uint SND_ASYNC = 0x0001;
+        public static uint SND_FILENAME = 0x00020000;
+        [DllImport("winmm.dll")]
+        public static extern uint mciSendString(string lpstrCommand, string lpstrReturnString, uint uReturnLength, uint hWndCallback);
 
     }
 }

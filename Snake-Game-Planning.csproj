@@ -102,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image\img1.png" />
-    <Content Include="music\MO_YU - 卡农（钢琴+小提琴）.mp3" />
+    <Content Include="music\萌萌哒的徐老师 - Color-X %28Remix%29.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
