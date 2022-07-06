@@ -20,9 +20,8 @@ namespace Snake_Game_Planning
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Owner.Show();
-            game.Close();
             this.Close();
+            game.init();
         }
 
         private void button1_Click(object sender, EventArgs e)

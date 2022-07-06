@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Snake_Game_Planning
 {
@@ -25,20 +25,14 @@ namespace Snake_Game_Planning
         //定义速度
         int speed = 500;
 
+        //定时器
+        Timer timer;
+
        
         public Game()
         {
             InitializeComponent();
-            bmp = new Bitmap(627, 470);
-            g = Graphics.FromImage(bmp);
-
-            map = new Map(g, 15, 30, 25);
-            map.addScore += addScore;
-            map.gameOver += gameOver;
-
-            panel1.BackColor = Color.Gray;
-            label2.Text = score.ToString();
-            label4.Text = level.ToString();
+            init();
         }
         //键盘响应事件
         public void Game_KeyDown(object sender, KeyEventArgs e)
@@ -61,22 +55,14 @@ namespace Snake_Game_Planning
             map.snake.TurnDirection(d);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            timer1_Tick(sender, e);
-        }
-
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
-            timer1.Interval = speed;
             map.snake.Go();
             panel1.CreateGraphics().DrawImage(bmp, 0, 0);
         }
 
         private void Game_Load(object sender, EventArgs e)
         {
-            map.start();
             Play();
         }
         public void addScore()
@@ -104,6 +90,39 @@ namespace Snake_Game_Planning
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+            
+        }
+
+        public void init()
+        {
+            panel1.BackColor = Color.Gray;
+
+            bmp = new Bitmap(627, 470);
+            g = Graphics.FromImage(bmp);
+            g.Clear(Color.Gray);
+            
+            map = new Map(g, 15, 30, 25);
+            map.addScore += addScore;
+            map.gameOver += gameOver;
+
+            //分数从0开始，关卡从1开始
+            score = 0;
+            level = 1;
+            label2.Text = score.ToString();
+            label4.Text = level.ToString();
+            
+            map.start();
+
+
+            //定义一个计时器
+            if (timer != null)
+            {
+                timer.Stop();
+            }
+            timer = new Timer();
+            timer.Interval = speed;
+            timer.Tick += new EventHandler(timer1_Tick);
+            timer.Start();
         }
 
         public static uint SND_ASYNC = 0x0001;

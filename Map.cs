@@ -20,9 +20,8 @@ namespace Snake_Game_Planning
         public readonly int length;
         //定义地图的宽度
         public readonly int width;
-        public Snake snake;
 
-        public bool victory = false;
+        public Snake snake;
 
         public Food food;
 
@@ -45,14 +44,9 @@ namespace Snake_Game_Planning
         {
             snake = new Snake(this);
             food = new Food(this);
-            DrawMap();
             food.DrawNewFood();
         }
 
-        public void DrawMap()
-        {
-            //g.DrawRectangle(new Pen(Color.Red), 0, 0, length, width);
-        }
 
     }
 }
