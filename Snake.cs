@@ -26,7 +26,7 @@ namespace Snake_Game_Planning
             this.map = map;
             bodyList = new List<Point>();
             //定义尾部坐标
-            tailInsert(new Point(0, 0));
+            headInsert(new Point(0, 0));
             //定义头部坐标
             headInsert(new Point(1,0));
 
@@ -74,17 +74,12 @@ namespace Snake_Game_Planning
         /// <param name="point">坐标</param>
         private void headInsert(Point point)
         {
-            if (bodyList.First() != null)
+            if (bodyList.Count != 0)
             {
                 g.FillRectangle(new SolidBrush(Color.Blue), bodyList.First().X * map.unit, bodyList.First().Y * map.unit, map.unit, map.unit);
             }
             bodyList.Insert(0, point);
             g.FillRectangle(new SolidBrush(Color.Yellow), point.X * map.unit, point.Y * map.unit, map.unit, map.unit);
-        }
-        private void tailInsert(Point point)
-        {
-            bodyList.Insert(0, point);
-            g.FillRectangle(new SolidBrush(Color.Blue), point.X * map.unit, point.Y * map.unit, map.unit, map.unit);
         }
         //蛇吃到食物后变长，蛇头+1
         public void SnakeGrowth()
