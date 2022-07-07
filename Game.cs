@@ -38,7 +38,7 @@ namespace Snake_Game_Planning
         public void Game_KeyDown(object sender, KeyEventArgs e)
         {
             char w = (char)e.KeyValue;
-            int d = 1;
+            int d = -1;
             if(w.Equals('W'))
             {
                 d = 0;
@@ -52,12 +52,16 @@ namespace Snake_Game_Planning
             {
                 d = 3;
             }
-            map.snake.TurnDirection(d);
+            if(d  != -1)
+            {
+                map.snake.TurnDirection(d);
+            }    
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             map.snake.Go();
+            map.DrawMap();
             panel1.CreateGraphics().DrawImage(bmp, 0, 0);
         }
 
@@ -67,9 +71,10 @@ namespace Snake_Game_Planning
         }
         public void addScore()
         {
-            score += 10;
+            score += 50;
             level = score / 100 + 1;
             speed = (int)(500 * (1.0 / level));
+            timer.Interval = speed;
             label2.Text = score.ToString();
             label4.Text = level.ToString();
         }
@@ -78,7 +83,6 @@ namespace Snake_Game_Planning
             Quit quit = new Quit();
             quit.game = this;
             quit.Show();
-            quit.Owner = this.Owner;
         }
 
         public void Play()
@@ -89,8 +93,7 @@ namespace Snake_Game_Planning
         }
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
-            
+            Application.Exit(); 
         }
 
         public void init()
@@ -108,11 +111,13 @@ namespace Snake_Game_Planning
             //分数从0开始，关卡从1开始
             score = 0;
             level = 1;
+            speed = 500;
             label2.Text = score.ToString();
             label4.Text = level.ToString();
             
             map.start();
-
+            map.DrawMap();
+            g.DrawImage(bmp, 0, 0);
 
             //定义一个计时器
             if (timer != null)

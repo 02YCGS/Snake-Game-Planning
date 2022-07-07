@@ -26,9 +26,7 @@ namespace Snake_Game_Planning
 
         private void button1_Click(object sender, EventArgs e)
         {
-            game.Close();
-            this.Owner.Close();
-            this.Close();
+            Application.Exit();
         }
     }
 }

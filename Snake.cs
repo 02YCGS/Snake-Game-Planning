@@ -175,7 +175,7 @@ namespace Snake_Game_Planning
         /// <returns></returns>
         public bool CheckSnake(Point point)
         {
-            return (point.X < 0 || point.X > map.column) || (point.Y < 0 || point.Y > map.row);
+            return (point.X < 0 || point.X >= map.column) || (point.Y < 0 || point.Y >= map.row);
         }
         /// <summary>
         /// 判断生成的食物是否和蛇重叠

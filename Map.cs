@@ -36,8 +36,8 @@ namespace Snake_Game_Planning
             this.unit = unit ;
             this.column = column;
             this.row = row;
-            this.length = column * unit;
-            this.width = row * unit;
+            this.width = column * unit;
+            this.length = row * unit;
         }
 
         public void start()
@@ -47,6 +47,10 @@ namespace Snake_Game_Planning
             food.DrawNewFood();
         }
 
+        public void DrawMap()
+        {
+            g.DrawRectangle(new Pen(Color.Black), 0, 0, width, length);
+        }
 
     }
 }

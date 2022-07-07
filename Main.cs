@@ -22,13 +22,12 @@ namespace Snake_Game_Planning
         {
             Game game = new Game();
             game.Show();
-            game.Owner = this;
             this.Hide();
         }
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
     }
 }
